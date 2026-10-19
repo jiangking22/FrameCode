@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' http://127.0.0.1:*; media-src 'self' file: blob: http://127.0.0.1:*; worker-src 'self' blob:; object-src 'none'; base-uri 'none'">
+<title>帧码 · FrameCode</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="topbar"><div class="brand"><span class="brand-mark">F<span>•</span></span><div><h1>帧码 <small>FrameCode</small></h1><p>直播房间码 · 本地识别工作台</p></div></div><div class="top-actions"><span class="local-badge">● 本地 OCR</span><button id="settings-open" class="quiet">设置</button><span class="version">v0.2.0</span></div></header>
+<main>
+<section class="player-column" aria-label="直播播放器">
+  <div class="section-title"><h2>直播画面</h2><div><button id="demo" class="quiet">试用演示</button><button id="open-file" class="quiet">打开视频</button></div></div>
+  <form id="play-form"><label class="sr-only" for="url">直播地址</label><input id="url" placeholder="粘贴公开直播间链接，或 FLV / HLS 视频流地址" autocomplete="off"><button id="play" class="primary" type="submit">连接直播</button></form>
+  <div class="play-options"><label>画质<select id="quality"><option value="best">最高画质</option><option value="720p">720p 优先</option><option value="540p">540p 优先</option><option value="360p">360p 优先</option></select></label><label>播放模式<select id="mode"><option value="standard">标准 · 含声音</option><option value="low">低延迟 · 仅 AVC/FLV 视频</option></select></label><label>目标缓存<select id="buffer"><option value="0.2">200 ms</option><option value="0.5">500 ms</option><option value="1">1 秒</option></select></label></div>
+  <div id="media-shell" class="media-shell">
+    <canvas id="surface" width="1280" height="720" aria-label="视频画面，点击框选区域后拖动选择"></canvas><video id="video" playsinline></video><div id="reference-boxes" class="reference-boxes" aria-hidden="true"></div>
+    <div id="empty" class="empty"><div class="screen-icon">▷</div><h3>等待直播画面</h3><p>连接直播、打开视频，或从桌面选一个窗口</p><button id="empty-demo">用演示画面体验识别</button></div>
+    <div id="selection" hidden><span>房间码区域</span></div><div id="select-tip" hidden>拖动框选房间码 · Esc 取消</div>
+  </div>
+  <div class="transport"><span id="media-label">尚未连接</span><div><button id="pause" disabled>暂停</button><button id="mute" disabled>静音</button><button id="media-stop" disabled>停止播放</button></div></div>
+  <div class="player-note"><span>◎ 只采集你选定的画面区域</span><span id="play-metrics">—</span></div>
+  <div class="guide"><strong>从画面到房间码</strong><ol><li><b>01</b> 连接或选择画面</li><li><b>02</b> 框选房间码</li><li><b>03</b> 按 Ctrl + 1 识别</li></ol></div>
+</section>
+<aside class="recognition-column">
+ <div class="section-title"><h2>房间码识别</h2><span id="phase" class="phase">等待画面</span></div>
+ <label class="field">识别来源<select id="source"><option value="player">播放器内部帧</option><option value="desktop">桌面 / 窗口画面</option></select></label>
+ <label class="field">识别规则<select id="rule"><option value="valorant">无畏契约特调</option><option value="delta">三角洲特调</option><option value="delta-1v1">三角洲 1V1 特调</option><option value="generic">通用六位码</option></select></label><p id="rule-hint" class="muted small">3 个大写字母 + 3 位数字</p>
+ <div class="section-title roi-title"><h3>识别区域</h3><button id="select-region" class="quiet" disabled>框选区域</button></div>
+ <div class="preview"><canvas id="preview" width="600" height="200" hidden></canvas><span id="preview-empty">框选后将在这里预览</span></div>
+ <div class="roi-actions"><button id="restore-region" class="quiet" disabled>恢复上次选区</button><button id="save-region" class="quiet" disabled>保存选区</button><button id="presets-open" class="quiet" disabled>区域预设</button></div>
+ <div class="code-panel"><div class="code-top"><span>已确认房间码</span><button id="copy" class="quiet" disabled>复制</button></div><output id="code">— — —</output><p id="candidate">等待识别</p></div>
+ <div class="stats"><span id="frames">已处理 0 帧</span><span id="ocr-time">OCR — ms</span></div>
+ <div class="auto-header"><label class="switch-label"><input type="checkbox" id="auto"> 自动粘贴并加入</label><span id="auto-label">仅复制</span></div>
+ <div class="point-grid"><button id="record-paste">记录粘贴位置<small>Ctrl + 2</small></button><button id="record-join">记录加入位置<small>Ctrl + 3</small></button></div>
+ <p id="input-hint" class="muted small">在游戏前台按快捷键记录按钮位置。</p>
+ <button id="recognize" class="primary recognize" disabled>开始识别 <kbd>Ctrl + 1</kbd></button>
+ <p class="emergency">紧急停止 <kbd>Ctrl + Shift + Q</kbd></p>
+</aside>
+</main>
+<footer><span id="status" role="status" aria-live="polite">准备就绪，先连接画面或试用演示。</span><span>打开即用 · 无需登录或会员</span></footer>
+<dialog id="sources-dialog"><div class="section-title"><h2>选择要采集的画面</h2><button id="sources-close" aria-label="关闭">×</button></div><p class="muted">选择屏幕或窗口，然后在预览画面中框选房间码。</p><div id="sources-list"></div></dialog>
+<dialog id="presets-dialog"><div class="section-title"><h2>区域预设</h2><button id="presets-close" aria-label="关闭">×</button></div><p class="muted small">自动应用：播放器画面加载后使用第一个勾选的预设。显示参考框：在播放器上标出预设范围。</p><form id="preset-form" class="preset-form"><input id="preset-name" maxlength="64" placeholder="预设名称" autocomplete="off"><button class="primary" type="submit">保存当前选区</button></form><div id="presets-list" class="presets-list"></div></dialog>
+<dialog id="settings-dialog">
+<div class="section-title"><h2>操作设置</h2><button id="settings-close" aria-label="关闭">×</button></div>
+<p class="muted">OCR 在本地运行。自动操作默认关闭，每次打开应用重新启用。</p>
+<form id="settings-form">
+<div class="timing-presets"><button id="timing-fast" type="button">快速参数</button><button id="timing-stable" type="button" class="quiet">稳妥参数</button></div>
+<p class="muted small">快速参数：10 / 20 / 50 ms。若游戏漏点或粘贴未完成，可切回稳妥参数。保存后生效。</p>
+<label class="field">鼠标移动后等待（ms）<input id="settle" type="number" min="10" max="500" value="30" required></label>
+<label class="field">鼠标按住时间（ms）<input id="hold" type="number" min="20" max="500" value="45" required></label>
+<label class="field">粘贴后等待（ms）<input id="gap" type="number" min="50" max="2000" value="80" required></label>
+<p class="muted small">无畏契约：点击粘贴按钮，再点击加入。三角洲：Ctrl+V，再点击加入。请使用窗口化或无边框窗口模式。</p>
+<button type="submit" class="primary">保存设置</button>
+</form></dialog>
+<script src="../../node_modules/mpegts.js/dist/mpegts.js"></script><script src="../../node_modules/hls.js/dist/hls.min.js"></script><script type="module" src="app.js"></script>
+</body></html>

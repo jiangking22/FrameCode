@@ -1,0 +1,22 @@
+node_modules/
+dist/
+artifacts/
+resources/streamlink/
+resources/*.mp4
+resources/*.flv
+resources/*.png
+resources/*.zip
+resources/ocr/*.traineddata
+resources/ocr/*.download
+resources/ocr-runtime/
+resources/.ocr-runtime-*/
+artifacts-audit.json
+*.log
+# Private screenshot fixtures and metadata stay on the local machine.
+tests/fixtures/*.png
+tests/fixtures/*.json
+.env
+.env.*
+!.env.example
+*.pem
+*.key
