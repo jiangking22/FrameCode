@@ -96,6 +96,8 @@ async function assertPackaged(relative){
     ...(electronZip?{electronZipDir:path.dirname(electronZip)}:{}),
     ignore:[
       /^\/(?:\.git|\.gitignore|artifacts|dist|docs|tests|scripts)(?:\/|$)/,
+      /^\/README\.md$/,
+      /^\/(?:node_modules|resources\/streamlink)\/.*\/(?:test|tests|__tests__|_tests|SelfTest)(?:\/|$)/i,
       /^\/package-lock\.json$/,
       /^\/SPEC\.md$/,
       /^\/artifacts-audit\.json$/,
@@ -108,6 +110,13 @@ async function assertPackaged(relative){
   for(const relative of required.filter(item=>!item.startsWith('resources/streamlink/')))await assertPackaged(relative);
   await assertPackaged('resources/streamlink/streamlink-8.6.2-1-py314-x86_64/bin/streamlink.exe');
   await require('../src/main/ocr.cjs').verifyRuntime(path.join(build,'resources/app'));
+
+  const runtimePackage={...packageJson};
+  delete runtimePackage.scripts;
+  delete runtimePackage.devDependencies;
+  await fs.promises.writeFile(path.join(build,'resources/app/package.json'),JSON.stringify(runtimePackage,null,2)+'\n');
+  const guide=fs.readFileSync(path.join(root,'README.md'),'utf8').split('\n## 源码运行与打包')[0].trim()+'\n';
+  await fs.promises.writeFile(path.join(build,'使用说明.md'),guide);
 
   await run(path.join(process.env.SystemRoot,'System32/WindowsPowerShell/v1.0/powershell.exe'),[
     '-NoLogo','-NoProfile','-NonInteractive','-Command',

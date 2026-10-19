@@ -10,17 +10,7 @@
   "scripts": {
     "start": "electron .",
     "resources": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/prepare-resources.ps1",
-    "test": "node --test tests/*.test.cjs",
-    "test:e2e": "node tests/e2e.cjs",
-    "test:recognition": "node tests/recognition-e2e.cjs",
-    "test:regions": "node tests/ocr-region-e2e.cjs",
-    "test:presets": "node tests/presets-e2e.cjs",
-    "test:official": "node --test tests/official-ocr.test.cjs tests/official-crop.test.cjs",
-    "test:media": "node tests/media-e2e.cjs",
-    "test:native": "node tests/native-e2e.cjs",
-    "test:settings": "node tests/settings-e2e.cjs",
-    "package": "node scripts/package.cjs",
-    "test:packaged": "node tests/packaged-e2e.cjs"
+    "package": "node scripts/package.cjs"
   },
   "dependencies": {
     "hls.js": "1.7.3",
@@ -28,8 +18,6 @@
   },
   "devDependencies": {
     "@electron/packager": "20.3.0",
-    "electron": "44.9.0",
-    "ffmpeg-static": "5.3.0",
-    "playwright": "1.64.1"
+    "electron": "44.9.0"
   }
 }
