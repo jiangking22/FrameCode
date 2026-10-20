@@ -99,7 +99,10 @@ class OcrEngine {
         stdio: ['pipe', 'pipe', 'pipe'],
         env: {
           ...process.env,
-          TESSDATA_PREFIX: path.join(this.directory, 'tessdata'),
+          // Tesseract's narrow Windows file API cannot read UTF-8 absolute paths.
+          // cwd is the verified bundled runtime, so an ASCII relative path also
+          // works when the installation directory or Windows user name is Chinese.
+          TESSDATA_PREFIX: './tessdata',
           TESSERACT_LANG: 'eng',
           TESSERACT_WHITELIST: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
           TESSERACT_DLL: path.join(this.directory, 'libtesseract-5.dll'),
@@ -213,6 +216,11 @@ class OcrEngine {
       let result;
       try { result = JSON.parse(payload.toString('utf8')); }
       catch { this._fail(worker, new Error('OCR 返回了无效 JSON')); return; }
+      // The worker reports startup failures before any frame, with sequence 0.
+      if (result?.type === 'error' && result.sequence === 0 && typeof result.error === 'string' && result.error) {
+        this._fail(worker, new Error(`OCR 初始化失败：${result.error}`));
+        return;
+      }
       const active = this.active;
       if (!active?.response || active.replied || !result || typeof result !== 'object' || Array.isArray(result) || result.sequence !== active.sequence) {
         this._fail(worker, new Error('OCR 响应序号不匹配'));

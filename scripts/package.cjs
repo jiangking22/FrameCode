@@ -92,6 +92,7 @@ async function assertPackaged(relative){
   ];
   required.forEach(requireFile);
   await require('../src/main/ocr.cjs').verifyRuntime(root);
+  await run(process.execPath,['--test',path.join(root,'tests/ocr-runtime.test.cjs')]);
   const innoCompiler=findInnoCompiler();
 
   fs.mkdirSync(dist,{recursive:true});
@@ -135,6 +136,8 @@ async function assertPackaged(relative){
   await fs.promises.writeFile(path.join(build,'resources/app/package.json'),JSON.stringify(runtimePackage,null,2)+'\n');
   const guide=fs.readFileSync(path.join(root,'README.md'),'utf8').split('\n## 源码运行与打包')[0].trim()+'\n';
   await fs.promises.writeFile(path.join(build,'使用说明.md'),guide);
+  await run(process.execPath,[path.join(root,'scripts/smoke-installed.cjs'),
+    path.join(build,'FrameCode.exe'),path.join(root,'artifacts',`package-${packageJson.version}`)]);
 
   await run(path.join(process.env.SystemRoot,'System32/WindowsPowerShell/v1.0/powershell.exe'),[
     '-NoLogo','-NoProfile','-NonInteractive','-Command',

@@ -1,13 +1,14 @@
 {
   "name": "framecode",
   "productName": "FrameCode",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Local live room-code recognition for Windows",
   "author": "FrameCode",
   "license": "UNLICENSED",
   "private": true,
   "main": "src/main/app.cjs",
   "scripts": {
+    "test": "node --test tests/*.test.cjs",
     "start": "electron .",
     "resources": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/prepare-resources.ps1",
     "package": "node scripts/package.cjs"

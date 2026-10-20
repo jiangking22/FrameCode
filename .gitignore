@@ -1,5 +1,6 @@
 node_modules/
 dist/
+artifacts/
 resources/streamlink/
 resources/demo.mp4
 resources/ocr-runtime/
