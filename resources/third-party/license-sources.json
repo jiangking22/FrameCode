@@ -1,0 +1,69 @@
+{
+  "format": 1,
+  "purpose": "Upstream license provenance, not a claim of complete binary source correspondence or a written source offer.",
+  "licenses": [
+    {
+      "file": "licenses/tesseract-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/tesseract-ocr/tesseract/5.4.1/LICENSE",
+      "retrieved": "2026-10-20",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "note": "Tesseract 5.4.1 reference license snapshot; the bundled DLL version has not been established."
+    },
+    {
+      "file": "licenses/leptonica-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/DanBloomberg/leptonica/1.84.1/leptonica-license.txt",
+      "retrieved": "2026-10-20",
+      "sha256": "87829abb5bbb00b55a107365da89e9a33f86c4250169e5a1e5588505be7d5806",
+      "note": "Leptonica 1.84.1 reference license snapshot; the bundled DLL version has not been established."
+    },
+    {
+      "file": "licenses/tessdata-fast-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/main/LICENSE",
+      "retrieved": "2026-10-20",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "note": "Upstream license reference; the exact traineddata revision has not been established."
+    },
+    {
+      "file": "licenses/GPL-2.0.txt",
+      "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/master/COPYING",
+      "retrieved": "2026-10-20",
+      "sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c",
+      "note": "Official GNU license text, mirrored in the GCC source repository."
+    },
+    {
+      "file": "licenses/GPL-3.0.txt",
+      "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/master/COPYING3",
+      "retrieved": "2026-10-20",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "note": "Official GNU license text, mirrored in the GCC source repository."
+    },
+    {
+      "file": "licenses/LGPL-2.1.txt",
+      "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/master/COPYING.LIB",
+      "retrieved": "2026-10-20",
+      "sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861",
+      "note": "Official GNU license text, mirrored in the GCC source repository."
+    },
+    {
+      "file": "licenses/LGPL-3.0.txt",
+      "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/master/COPYING3.LIB",
+      "retrieved": "2026-10-20",
+      "sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+      "note": "Official GNU license text, mirrored in the GCC source repository."
+    },
+    {
+      "file": "licenses/GCC-Runtime-Library-Exception-3.1.txt",
+      "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/master/COPYING.RUNTIME",
+      "retrieved": "2026-10-20",
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+      "note": "Official GCC Runtime Library Exception text."
+    },
+    {
+      "file": "licenses/winpthreads-COPYING.txt",
+      "url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/master/mingw-w64-libraries/winpthreads/COPYING",
+      "retrieved": "2026-10-20",
+      "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+      "note": "Upstream reference copyright and license text; the exact bundled DLL package revision has not been established."
+    }
+  ]
+}
