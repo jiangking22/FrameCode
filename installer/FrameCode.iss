@@ -10,6 +10,7 @@ AppPublisher=FrameCode
 AppPublisherURL=https://github.com/jiangking22/FrameCode
 AppSupportURL=https://github.com/jiangking22/FrameCode/issues
 DefaultDirName={autopf}\FrameCode
+DisableDirPage=no
 DefaultGroupName=帧码 FrameCode
 OutputBaseFilename=FrameCode-{#AppVersion}-win32-x64-Setup
 OutputDir={#SourcePath}\..\dist
