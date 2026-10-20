@@ -31,6 +31,8 @@ FrameCode 是 Windows 10/11 x64 的本地房间码识别工具。它支持直播
 
 从 [GitHub Releases](https://github.com/jiangking22/FrameCode/releases/latest) 下载 `FrameCode-版本-win32-x64-Setup.exe`，按向导安装；也可以下载同版本 ZIP，解压后运行 `FrameCode.exe`。安装包提供开始菜单快捷方式、可选桌面快捷方式和 Windows 卸载入口。OCR 在本地离线运行，观看直播需要网络。
 
+不需要安装 AS、Tesseract、Python 或 Node.js。OCR 引擎、依赖库和英文数字识别数据都随安装包和便携版提供。便携版需要完整解压，不能只复制 `FrameCode.exe`。0.3.5 修复了中文安装路径下 OCR 无法读取语言文件的问题，支持安装在含中文或空格的目录。
+
 自动操作需要以管理员身份运行程序。首次从管理员版安装器启动时以当前 Windows 用户启动；需要操作高权限游戏时，退出 FrameCode，再右键程序选择“以管理员身份运行”。
 
 ## 源码运行与打包
@@ -44,4 +46,6 @@ npm run package
 
 `npm run resources` 只校验随项目保存的运行资源。Windows x64 打包还需要安装 Inno Setup 6.7 或更新版本；如果 `ISCC.exe` 不在常见安装位置，请把 `INNO_SETUP_ISCC` 设为编译器完整路径。`npm run package` 会在 `dist/` 生成安装程序、便携 ZIP 和本地应用文件夹。发布包含离线 OCR、Streamlink、播放器依赖、演示视频和第三方组件声明，不需要额外安装服务。
 
-对实际安装目录执行 `node scripts/smoke-installed.cjs "完整路径\FrameCode.exe" "测试输出目录"` 可以验证程序启动、版本号、内置演示播放和离线 OCR 确认流程，并保存截图。测试使用独立用户数据目录，演示识别会将 `ABC123` 复制到剪贴板。
+`npm test` 包含中文临时目录中的真实 OCR 初始化测试，以及启动错误和响应序号校验测试。需要完整的本地 OCR 资源。
+
+对实际安装目录执行 `node scripts/smoke-installed.cjs "完整路径\FrameCode.exe" "测试输出目录"` 可以验证程序启动、版本号、内置演示播放和离线 OCR 确认流程，并保存截图。测试使用独立用户数据目录和仅含 Windows 系统目录的 PATH，核对 OCR 已加载模块只能来自程序包或 Windows，并保存模块路径清单。演示识别会将 `ABC123` 复制到剪贴板。此为进程环境隔离测试，不等同于全新 Windows 虚拟机测试。打包时自动执行回归测试和生成程序的演示识别测试。
