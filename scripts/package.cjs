@@ -8,6 +8,20 @@ const dist=path.join(root,'dist');
 const buildName='FrameCode-win32-x64';
 const build=path.join(dist,buildName);
 const zip=path.join(dist,`FrameCode-${require(path.join(root,'package.json')).version}-win32-x64.zip`);
+const installer=path.join(root,'installer','FrameCode.iss');
+
+function findInnoCompiler(){
+  if(process.env.INNO_SETUP_ISCC){
+    if(!fs.existsSync(process.env.INNO_SETUP_ISCC))throw new Error(`找不到 Inno Setup 编译器：${process.env.INNO_SETUP_ISCC}`);
+    return process.env.INNO_SETUP_ISCC;
+  }
+  const roots=[process.env['ProgramFiles(x86)'],process.env.ProgramFiles,process.env.LOCALAPPDATA].filter(Boolean);
+  for(const directory of roots){
+    const candidate=path.join(directory,'Inno Setup 6','ISCC.exe');
+    if(fs.existsSync(candidate))return candidate;
+  }
+  throw new Error('缺少 Inno Setup 6，请安装后设置 INNO_SETUP_ISCC 环境变量再运行 npm run package');
+}
 
 function insideDist(target){
   const resolved=path.resolve(target);
@@ -71,11 +85,14 @@ async function assertPackaged(relative){
     'resources/ocr-runtime/libtesseract-5.dll',
     'resources/ocr-runtime/tessdata/eng.traineddata',
     'resources/ocr-runtime/manifest.sha256.json',
+    'resources/third-party/README.md',
+    'resources/third-party/license-sources.json',
     'node_modules/mpegts.js/dist/mpegts.js',
     'node_modules/hls.js/dist/hls.min.js'
   ];
   required.forEach(requireFile);
   await require('../src/main/ocr.cjs').verifyRuntime(root);
+  const innoCompiler=findInnoCompiler();
 
   fs.mkdirSync(dist,{recursive:true});
   for(const target of [build,zip])if(fs.existsSync(insideDist(target)))fs.rmSync(insideDist(target),{recursive:true,force:true});
@@ -96,6 +113,7 @@ async function assertPackaged(relative){
     ...(electronZip?{electronZipDir:path.dirname(electronZip)}:{}),
     ignore:[
       /^\/(?:\.git|\.gitignore|artifacts|dist|docs|tests|scripts)(?:\/|$)/,
+      /^\/installer(?:\/|$)/,
       /^\/README\.md$/,
       /^\/(?:node_modules|resources\/streamlink)\/.*\/(?:test|tests|__tests__|_tests|SelfTest)(?:\/|$)/i,
       /^\/package-lock\.json$/,
@@ -122,9 +140,18 @@ async function assertPackaged(relative){
     '-NoLogo','-NoProfile','-NonInteractive','-Command',
     `Compress-Archive -LiteralPath '${build.replaceAll("'","''")}' -DestinationPath '${zip.replaceAll("'","''")}' -CompressionLevel Optimal`
   ]);
+  const innoSetupEnv={...process.env,FRAMECODE_APP_VERSION:packageJson.version,FRAMECODE_APP_SOURCE_DIR:build};
+  await new Promise((resolve,reject)=>{
+    const child=spawn(innoCompiler,['/Q',installer,`/O${dist}`],{windowsHide:true,stdio:'inherit',env:innoSetupEnv});
+    child.on('error',reject);
+    child.on('exit',code=>code===0?resolve():reject(new Error(`Inno Setup 退出码 ${code}`)));
+  });
+  const setup=path.join(dist,`FrameCode-${packageJson.version}-win32-x64-Setup.exe`);
+  if(!fs.existsSync(setup)||fs.statSync(setup).size<50*1024*1024)throw new Error('未生成包含完整离线资源的安装包');
   const mb=value=>`${(value/1024/1024).toFixed(1)} MB`;
   console.log(`PACKAGED ${build}`);
   console.log(`ZIP ${zip} (${mb(fs.statSync(zip).size)})`);
+  console.log(`SETUP ${setup} (${mb(fs.statSync(setup).size)})`);
 })().catch(error=>{
   console.error(error);
   process.exitCode=1;
