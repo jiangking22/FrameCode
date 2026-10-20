@@ -10,7 +10,7 @@ if(!executable||!artifactsArgument)throw new Error('Usage: node scripts/smoke-in
 const artifacts=path.resolve(artifactsArgument);
 fs.mkdirSync(path.join(artifacts,'user-data'),{recursive:true});
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-// Reproduce an end-user launch without developer PATH, Tesseract, or AS settings.
+// Reproduce an end-user launch without developer PATH or external OCR settings.
 const cleanEnv=Object.fromEntries(Object.entries(process.env).filter(([key])=>
   /^(SystemRoot|WINDIR|SystemDrive|ComSpec|TEMP|TMP|USERPROFILE|LOCALAPPDATA|APPDATA|HOMEDRIVE|HOMEPATH)$/i.test(key)));
 cleanEnv.PATH=path.join(process.env.SystemRoot,'System32');

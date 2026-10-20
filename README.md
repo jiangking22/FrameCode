@@ -31,7 +31,7 @@ FrameCode 是 Windows 10/11 x64 的本地房间码识别工具。它支持直播
 
 从 [GitHub Releases](https://github.com/jiangking22/FrameCode/releases/latest) 下载 `FrameCode-版本-win32-x64-Setup.exe`，按向导安装；也可以下载同版本 ZIP，解压后运行 `FrameCode.exe`。安装包提供开始菜单快捷方式、可选桌面快捷方式和 Windows 卸载入口。OCR 在本地离线运行，观看直播需要网络。
 
-不需要安装 AS、Tesseract、Python 或 Node.js。OCR 引擎、依赖库和英文数字识别数据都随安装包和便携版提供。便携版需要完整解压，不能只复制 `FrameCode.exe`。0.3.5 修复了中文安装路径下 OCR 无法读取语言文件的问题，支持安装在含中文或空格的目录。
+OCR 开箱即用，无需额外安装识别组件。OCR 引擎、依赖库和英文数字识别数据都随安装包和便携版提供。便携版需要完整解压，不能只复制 `FrameCode.exe`。0.3.5 修复了中文安装路径下 OCR 无法读取语言文件的问题，支持安装在含中文或空格的目录。
 
 自动操作需要以管理员身份运行程序。首次从管理员版安装器启动时以当前 Windows 用户启动；需要操作高权限游戏时，退出 FrameCode，再右键程序选择“以管理员身份运行”。
 

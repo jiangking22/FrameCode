@@ -15,7 +15,7 @@ test('bundled OCR initializes and recognizes frames from a Chinese installation 
     fs.cpSync(path.join(__dirname, '../resources/ocr-runtime'), runtime, { recursive: true });
     const engine = new OcrEngine(root, { spawn: (file, args, options) => spawn(file, args, {
       ...options,
-      // No developer tools or AS installation paths in the child's search path.
+      // No developer tools or external installation paths in the child's search path.
       env: { SystemRoot: process.env.SystemRoot, WINDIR: process.env.WINDIR,
         PATH: path.join(process.env.SystemRoot, 'System32'),
         ...Object.fromEntries(Object.entries(options.env).filter(([key]) => key.startsWith('TESS'))) },
