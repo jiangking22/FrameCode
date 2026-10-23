@@ -48,9 +48,9 @@ function cleanSettings(value){
     region:validRegion(value.region)?value.region:null,
     presets:cleanPresets(value.presets),
     timing:{
-      settle:bounded(timing.settle,10,500,30),
-      hold:bounded(timing.hold,20,500,45),
-      gap:bounded(timing.gap,50,2000,80)
+      settle:bounded(timing.settle,10,500,10),
+      hold:bounded(timing.hold,20,500,20),
+      gap:bounded(timing.gap,50,2000,50)
     }
   };
 }

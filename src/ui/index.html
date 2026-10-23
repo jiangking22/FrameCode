@@ -42,10 +42,10 @@
 <p class="muted">OCR 在本地运行。自动操作默认关闭，每次打开应用重新启用。</p>
 <form id="settings-form">
 <div class="timing-presets"><button id="timing-fast" type="button">快速参数</button><button id="timing-stable" type="button" class="quiet">稳妥参数</button></div>
-<p class="muted small">快速参数：10 / 20 / 50 ms。若游戏漏点或粘贴未完成，可切回稳妥参数。保存后生效。</p>
-<label class="field">鼠标移动后等待（ms）<input id="settle" type="number" min="10" max="500" value="30" required></label>
-<label class="field">鼠标按住时间（ms）<input id="hold" type="number" min="20" max="500" value="45" required></label>
-<label class="field">粘贴后等待（ms）<input id="gap" type="number" min="50" max="2000" value="80" required></label>
+<p class="muted small">默认使用快速参数：10 / 20 / 50 ms。若游戏漏点或粘贴未完成，可切回稳妥参数。调整后保存生效。</p>
+<label class="field">鼠标移动后等待（ms）<input id="settle" type="number" min="10" max="500" value="10" required></label>
+<label class="field">鼠标按住时间（ms）<input id="hold" type="number" min="20" max="500" value="20" required></label>
+<label class="field">粘贴后等待（ms）<input id="gap" type="number" min="50" max="2000" value="50" required></label>
 <p class="muted small">无畏契约：点击粘贴按钮，再点击加入。三角洲：Ctrl+V，再点击加入。请使用窗口化或无边框窗口模式。</p>
 <button type="submit" class="primary">保存设置</button>
 </form></dialog>
